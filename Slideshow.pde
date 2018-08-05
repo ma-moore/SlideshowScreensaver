@@ -11,5 +11,5 @@ void setup() {
 
 void draw() {
   background(0);
-  image(img,screenWidth,screenHeight);
+  image(img,0,0);
 }
