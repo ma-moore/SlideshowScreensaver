@@ -5,20 +5,44 @@ private class ImageGetter {
   //ArrayList<PImage> images;
   String path = "E:\\Users\\will2\\Documents\\Google Drive\\Cool Art\\";
   ArrayList<String> supportedTypes;
+  ArrayList<Image> allImages;
   
   ImageGetter() {
     supportedTypes = new ArrayList<String>();
     supportedTypes.add("jpg"); supportedTypes.add("png"); supportedTypes.add("gif"); supportedTypes.add("bmp");
     images = new ArrayList<String>();
     images.addAll(getFiles(path));
-    //listFileTypes(images);
-    println(images.size());
+    allImages = getAllImages();
   }
   
-  public PImage getImage() {
+  public Image getImage() {
     int rand = int(random(images.size()));
-    PImage image = loadImage(images.get(rand));
+    String selection = images.get(rand);
+    Image image = new Image(selection);
     return image;
+  }
+  
+  public ArrayList<Image> getAllImages() {
+    ArrayList<Image> allLandscape = new ArrayList<Image>();
+    ArrayList<Image> allPortrait = new ArrayList<Image>();
+    ArrayList<Image> allSquare = new ArrayList<Image>();
+    int count=0;
+    while (count<50&&count<images.size()){
+      Image image = getImage();
+      String orientation = image.getOrientation();
+      if (orientation.equals("landscape")) {
+        allLandscape.add(image);
+      } else if (orientation.equals("portrait")) {
+        allPortrait.add(image);
+      } else {
+        allSquare.add(image);
+      }
+      count++;
+    }
+    System.out.println("Landscape: "+allLandscape.size());
+    System.out.println("Portrait: "+allPortrait.size());
+    System.out.println("Square: "+allSquare.size());
+    return allLandscape;
   }
   
   private ArrayList<String> getFiles(String path) {
@@ -41,7 +65,6 @@ private class ImageGetter {
   }
   
   private void listFileTypes(ArrayList<String> paths) {
-    //ArrayList<String> types = new ArrayList<String>();
     HashMap<String, Integer> types = new HashMap<String, Integer>();
     for (String f: paths) {
       Integer n = f.lastIndexOf('.');
